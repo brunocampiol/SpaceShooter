@@ -33,4 +33,7 @@
 
     public static string StartCenterText = "Are you ready?";
     public static string GoCenterText = "GO!";
+
+    public static string WinCenterText = "You win";
+    public static string DiedCenterText = "You died";
 }

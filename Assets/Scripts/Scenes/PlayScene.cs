@@ -5,6 +5,7 @@ using System.Threading;
 using System.Timers;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayScene : MonoBehaviour
 {
@@ -20,6 +21,15 @@ public class PlayScene : MonoBehaviour
     private GameObject _player;
     private GameObject _enemy;
 
+    // Holds the last game state, when it was changed
+    // and if it was already handled once
+    private GameState _lastGameState;
+    private double _lastStateTicket;
+    private bool _lastStateHandled;
+
+    private static string _updateTimeText_Tick = "UpdateTimeText_Tick";
+    private static string _updateGameTicke_Tick = "UpdateGameTicket_Tick";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,30 +38,39 @@ public class PlayScene : MonoBehaviour
         _enemy = GameObject.FindGameObjectWithTag(GameInfoStatic.TagEnemy);
         _player = GameObject.FindGameObjectWithTag(GameInfoStatic.TagPlayer);
 
+        // default on game start
+        GameInfo.Instance.GameTicks = 0;
+        GameInfo.Instance.PlayerLives = GameInfoStatic.DefaultPlayerLives;
+        GameInfo.Instance.PlayerScore = GameInfoStatic.DefaultPlayerScore;
+
+        InitGameTimers();
         InitializeScene();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameInfo.Instance.GameState == GameState.Paused) return;  
+        HandleGameState();
 
-        // Check for events
-        if (GameInfo.Instance.GameState == GameState.PlayerLoose)
+        if (GameInfo.Instance.GameState == GameState.Paused) return;
+
+        switch (GameInfo.Instance.GameState)
         {
-            GameInfo.Instance.PlayerLives--;
-            SetGameOver("You Died");
-            InitializeScene();
-        }
-        else if (GameInfo.Instance.GameState == GameState.PlayerWin)
-        {
-            GameInfo.Instance.PlayerScore += GameInfoStatic.KillScore;
-            SetGameOver("You Win");
-            InitializeScene();
+            case GameState.PlayerLoose:
+                HandlePlayerLoose();
+                break;
+            case GameState.PlayerWin:
+                HandlePlayerWin();
+                break;
+            case GameState.Starting:
+                HandleStarting();
+                break;
+            default:
+                break;
         }
 
         // Update GUI
-        UpdateGUI();        
+        UpdateGUI();
     }
 
     private void FixedUpdate()
@@ -66,46 +85,107 @@ public class PlayScene : MonoBehaviour
         PlayerLives.text = $"Lives: {GameInfo.Instance.PlayerLives.ToString()}";
     }
 
-    private void SetGameOver(string centerText)
-    {
-        //PlayerScore.text = String.Empty;
-        //PlayerLives.text = String.Empty;
-        CenterText.text = centerText;
-
-        CancelInvoke("UpdateTimeText_Tick");
-
-        new WaitForSeconds(5);
-    }
-
     private void InitializeScene()
     {
+        // reset level time
         GameInfo.Instance.LevelTime = GameInfoStatic.DefaultLevelTime;
-        GameInfo.Instance.PlayerLives = GameInfoStatic.DefaultPlayerLives;
-        GameInfo.Instance.PlayerScore = GameInfoStatic.DefaultPlayerScore;
 
         // Sets player in the middle
         _player.transform.position = Vector3.zero;
         // Sets enemy in the middle
-        _enemy.transform.position = new Vector3(0,0,50);
+        _enemy.transform.position = new Vector3(0, 0, 50);
 
         _player.SetActive(true);
         _enemy.SetActive(true);
 
-        // CenterText.text = GameInfoStatic.StartCenterText;
-        // new WaitForSeconds(2);
-        // CenterText.text = GameInfoStatic.GoCenterText;
-        // new WaitForSeconds(0.5F);
-        
-        CenterText.text = String.Empty;
+        GameInfo.Instance.GameState = GameState.Starting;
+    }
 
-        InvokeRepeating("UpdateTimeText_Tick", 0.0f, 1.0f);
+    private void HandleGameState()
+    {
+        if (_lastGameState != GameInfo.Instance.GameState)
+        {
+            _lastStateTicket = GameInfo.Instance.GameTicks;
+            _lastGameState = GameInfo.Instance.GameState;
+            _lastStateHandled = false;
+        }
+    }
+
+    private void HandleStarting()
+    {
+        if (!_lastStateHandled)
+        {
+            CenterText.text = GameInfoStatic.StartCenterText;
+            _lastStateHandled = true;
+        }
+
+        // Shows center sequence text
+        if (GameInfo.Instance.GameTicks > _lastStateTicket + 2)
+        {
+            CenterText.text = GameInfoStatic.GoCenterText;
+        }
+        if (GameInfo.Instance.GameTicks > _lastStateTicket + 3)
+        {
+            HandleStart();
+        }
+    }
+
+    private void HandleStart()
+    {
+        CenterText.text = "";
         GameInfo.Instance.GameState = GameState.Running;
+    }
+
+    private void HandlePlayerLoose()
+    {
+        if (!_lastStateHandled)
+        {
+            _lastStateHandled = true;
+            GameInfo.Instance.PlayerLives--;
+            CenterText.text = GameInfoStatic.DiedCenterText;
+        }
+
+        if (GameInfo.Instance.GameTicks > _lastStateTicket + 2)
+        {
+            if (GameInfo.Instance.PlayerLives == 0)
+            {
+                SceneManager.LoadScene("StartScene", LoadSceneMode.Single);
+            }
+
+            InitializeScene();
+        }
+    }
+
+    private void HandlePlayerWin()
+    {
+        if (!_lastStateHandled)
+        {
+            _lastStateHandled = true;
+            GameInfo.Instance.PlayerScore += GameInfoStatic.KillScore;
+            CenterText.text = GameInfoStatic.WinCenterText;
+        }
+
+        if (GameInfo.Instance.GameTicks > _lastStateTicket + 2)
+        {
+            InitializeScene();
+        }
+    }
+
+    private void UpdateGameTicket_Tick()
+    {
+        GameInfo.Instance.GameTicks += 1;
     }
 
     private void UpdateTimeText_Tick()
     {
-        if (GameInfo.Instance.GameState != GameState.Running) return;  
+        if (GameInfo.Instance.GameState != GameState.Running) return;
 
         GameInfo.Instance.LevelTime--;
+    }
+
+    private void InitGameTimers()
+    {
+        InvokeRepeating(_updateGameTicke_Tick, 0.0f, 1.0f);
+        InvokeRepeating(_updateTimeText_Tick, 0.0f, 1.0f);
     }
 }

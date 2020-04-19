@@ -16,19 +16,23 @@ public class DestroyByContact : MonoBehaviour
 	{
         if (other.tag != "GameController")
         {
-            _logger.LogInfo($"DestroyByContact {gameObject.tag} & {other.tag}");
+            _logger.LogInfo($"DestroyByContact gameObject'{gameObject.tag}' & other'{other.tag}'");
 
             if (other.tag == GameInfoStatic.TagPlayer) 
             {
-                GameInfo.Instance.GameState = GameState.PlayerLoose;
-                //other.gameObject.transform.gameObject.SetActive(false);
-                other.gameObject.SetActive(false);
+                if (GameInfo.Instance.GameState == GameState.Running)
+                {
+                    GameInfo.Instance.GameState = GameState.PlayerLoose;
+                    other.gameObject.SetActive(false);
+                }
             }
             else if (other.tag == GameInfoStatic.TagEnemy) 
             {
-                GameInfo.Instance.GameState = GameState.PlayerWin;
-                //other.gameObject.transform.gameObject.SetActive(false);
-                other.gameObject.SetActive(false);
+                if (GameInfo.Instance.GameState == GameState.Running)
+                {
+                    GameInfo.Instance.GameState = GameState.PlayerWin;
+                    other.gameObject.SetActive(false);
+                }
             }
             else
             {

@@ -92,6 +92,8 @@ public sealed class GameInfo : IDisposable
 
         public GameState GameState { get; set; }
 
+        public double GameTicks { get; set; }
+
         public int PlayerLives { get; set; }
 
         public int PlayerScore { get; set; }
