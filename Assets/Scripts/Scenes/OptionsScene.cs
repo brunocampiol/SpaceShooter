@@ -22,10 +22,25 @@ public class OptionsScene : MonoBehaviour
         ButtonBack.GetComponentInChildren<Text>().text = GameInfoStatic.ButtonBack;        
 
         ButtonBack.onClick.AddListener(BackButtonClick);
+
+        GameInfo.Instance.GameState = GameState.Options;
     }
 
     void BackButtonClick()
     {
-        SceneManager.LoadScene("StartScene", LoadSceneMode.Single);
+       StartCoroutine(LoadStartScene());
+    }
+
+         private IEnumerator LoadStartScene()
+    {
+        // The Application loads the Scene in the background as the current Scene runs.
+        // This is particularly good for creating loading screens.
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("StartScene", LoadSceneMode.Single);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
     }
 }

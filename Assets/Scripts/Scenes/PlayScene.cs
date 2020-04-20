@@ -65,6 +65,9 @@ public class PlayScene : MonoBehaviour
             case GameState.Starting:
                 HandleStarting();
                 break;
+            case GameState.Menu:
+                Destroy(this);
+                break;
             default:
                 break;
         }
@@ -149,7 +152,12 @@ public class PlayScene : MonoBehaviour
         {
             if (GameInfo.Instance.PlayerLives == 0)
             {
-                SceneManager.LoadScene("StartScene", LoadSceneMode.Single);
+                CenterText.text = "";
+                LevelTime.text = "";
+                PlayerScore.text = "";
+                PlayerLives.text = "";
+
+                StartCoroutine(LoadStartScene());
             }
 
             InitializeScene();
@@ -168,6 +176,19 @@ public class PlayScene : MonoBehaviour
         if (GameInfo.Instance.GameTicks > _lastStateTicket + 2)
         {
             InitializeScene();
+        }
+    }
+
+     private IEnumerator LoadStartScene()
+    {
+        // The Application loads the Scene in the background as the current Scene runs.
+        // This is particularly good for creating loading screens.
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("StartScene", LoadSceneMode.Single);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
         }
     }
 

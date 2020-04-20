@@ -25,16 +25,52 @@ public class StartScene : MonoBehaviour
 
         ButtonStart.onClick.AddListener(StartButtonClick);
         ButtonOptions.onClick.AddListener(OptionsButtonClick);
+
+        for(int i =0; i < SceneManager.sceneCount; i++)
+        {
+            _logger.LogInfo($"Scene '{SceneManager.GetSceneAt(i).name}'");
+        }
+
+        GameInfo.Instance.GameState = GameState.Menu;
+
+        //SceneManager.UnloadSceneAsync("PlayScene");
+        //SceneManager.UnloadSceneAsync("OptionsScene");
     }
 
     void StartButtonClick()
     {
-        SceneManager.LoadScene("PlayScene", LoadSceneMode.Single);
+
+         StartCoroutine(LoadPlayScene());
     }
 
     void OptionsButtonClick()
     {
-        SceneManager.LoadScene("OptionsScene", LoadSceneMode.Single);
+         StartCoroutine(LoadOptionsScene());
     }
     
+    private IEnumerator LoadOptionsScene()
+    {
+        // The Application loads the Scene in the background as the current Scene runs.
+        // This is particularly good for creating loading screens.
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("OptionsScene", LoadSceneMode.Single);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+    }
+
+        private IEnumerator LoadPlayScene()
+    {
+        // The Application loads the Scene in the background as the current Scene runs.
+        // This is particularly good for creating loading screens.
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("PlayScene", LoadSceneMode.Single);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+    }
 }
