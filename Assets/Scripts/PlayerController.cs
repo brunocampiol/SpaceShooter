@@ -47,18 +47,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameInfo.Instance.GameState != GameState.Running) return;  
-         
+        if (GameInfo.Instance.GameState != GameState.Running) return;
+
         _myTime = _myTime + Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.Space) && _myTime > _nextFire)
         {
             _nextFire = _myTime + _fireRate;
 
-            //_logger.LogInfo($"Spanw {_shotSpawn.rotation.x},{_shotSpawn.rotation.y},{_shotSpawn.rotation.z},{_shotSpawn.rotation.w}");
-
-            //GameObject shot = Instantiate(_shot, _shotSpawn.position, _shotSpawn.rotation) as GameObject;
-            Quaternion shotRotation = new Quaternion(_shotSpawn.rotation.x,0,0,_shotSpawn.rotation.w);
+            Quaternion shotRotation = new Quaternion(_shotSpawn.rotation.x, 0, 0, _shotSpawn.rotation.w);
             GameObject shot = Instantiate(_shot, _shotSpawn.position, shotRotation) as GameObject;
             ShotController shotController = shot.GetComponent<ShotController>();
             shotController.SetDirection(Vector3.forward);
@@ -72,8 +69,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameInfo.Instance.GameState != GameState.Running) return;  
-        
+        if (GameInfo.Instance.GameState != GameState.Running) return;
+
         float moveHorizontal = Input.GetAxis(_horizontal);
         float moveVertical = Input.GetAxis(_vertical);
 

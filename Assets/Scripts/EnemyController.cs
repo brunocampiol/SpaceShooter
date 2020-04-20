@@ -49,17 +49,15 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameInfo.Instance.GameState != GameState.Running) return;  
+        if (GameInfo.Instance.GameState != GameState.Running) return;
 
         _myTime = _myTime + Time.deltaTime;
-        
+
         if (_myTime > _nextFire)
         {
-            //_logger.LogInfo($"Spanw {_shotSpawn.position.x},{_shotSpawn.position.y},{_shotSpawn.position.z}");
             _nextFire = _myTime + _fireRate;
 
-            Quaternion shotRotation = new Quaternion(_shotSpawn.rotation.x,0,0,_shotSpawn.rotation.w);
-            //GameObject shot = Instantiate(_shot, _shotSpawn.position, _shotSpawn.rotation) as GameObject;
+            Quaternion shotRotation = new Quaternion(_shotSpawn.rotation.x, 0, 0, _shotSpawn.rotation.w);
             GameObject shot = Instantiate(_shot, _shotSpawn.position, shotRotation) as GameObject;
             ShotController shotController = shot.GetComponent<ShotController>();
             shotController.SetDirection(Vector3.back);
@@ -71,7 +69,7 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameInfo.Instance.GameState != GameState.Running) return;  
+        if (GameInfo.Instance.GameState != GameState.Running) return;
         if (_playerRigidBody == null) return; // avoids errors on console
 
         _rigidBody.velocity = _AI.GetMovement(_rigidBody.position, _playerRigidBody.position, _speed);

@@ -9,16 +9,16 @@ public class DestroyByContact : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-          _logger = new Logger();    
+        _logger = new Logger();
     }
 
     void OnTriggerEnter(Collider other)
-	{
+    {
+        _logger.LogInfo($"Collider ==> '{gameObject.tag}' X '{other.tag}'");
+
         if (other.tag != "GameController")
         {
-            _logger.LogInfo($"DestroyByContact gameObject'{gameObject.tag}' & other'{other.tag}'");
-
-            if (other.tag == GameInfoStatic.TagPlayer) 
+            if (other.tag == GameInfoStatic.TagPlayer)
             {
                 if (GameInfo.Instance.GameState == GameState.Running)
                 {
@@ -26,7 +26,7 @@ public class DestroyByContact : MonoBehaviour
                     other.gameObject.SetActive(false);
                 }
             }
-            else if (other.tag == GameInfoStatic.TagEnemy) 
+            else if (other.tag == GameInfoStatic.TagEnemy)
             {
                 if (GameInfo.Instance.GameState == GameState.Running)
                 {
@@ -38,8 +38,8 @@ public class DestroyByContact : MonoBehaviour
             {
                 Destroy(other.gameObject); // Shot, Player or Enemy
             }
-            
-		    Destroy(gameObject); // Asteroid
+
+            Destroy(gameObject); // Asteroid
         }
-	}
+    }
 }

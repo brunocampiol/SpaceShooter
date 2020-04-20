@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class StartScene : MonoBehaviour
 {
-     public Text GameTitle;
+    public Text GameTitle;
 
-     public Button ButtonStart;
-     public Button ButtonOptions;
+    public Button ButtonStart;
+    public Button ButtonOptions;
 
     private ILogger _logger;
 
@@ -26,28 +26,19 @@ public class StartScene : MonoBehaviour
         ButtonStart.onClick.AddListener(StartButtonClick);
         ButtonOptions.onClick.AddListener(OptionsButtonClick);
 
-        for(int i =0; i < SceneManager.sceneCount; i++)
-        {
-            _logger.LogInfo($"Scene '{SceneManager.GetSceneAt(i).name}'");
-        }
-
         GameInfo.Instance.GameState = GameState.Menu;
-
-        //SceneManager.UnloadSceneAsync("PlayScene");
-        //SceneManager.UnloadSceneAsync("OptionsScene");
     }
 
     void StartButtonClick()
     {
-
-         StartCoroutine(LoadPlayScene());
+        StartCoroutine(LoadPlayScene());
     }
 
     void OptionsButtonClick()
     {
-         StartCoroutine(LoadOptionsScene());
+        StartCoroutine(LoadOptionsScene());
     }
-    
+
     private IEnumerator LoadOptionsScene()
     {
         // The Application loads the Scene in the background as the current Scene runs.
@@ -61,7 +52,7 @@ public class StartScene : MonoBehaviour
         }
     }
 
-        private IEnumerator LoadPlayScene()
+    private IEnumerator LoadPlayScene()
     {
         // The Application loads the Scene in the background as the current Scene runs.
         // This is particularly good for creating loading screens.
