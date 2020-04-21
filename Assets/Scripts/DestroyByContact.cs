@@ -36,10 +36,12 @@ public class DestroyByContact : MonoBehaviour
             }
             else
             {
-                Destroy(other.gameObject); // Shot, Player or Enemy
+                // Shot, Player or Enemy
+                Destroy(other.gameObject); 
             }
 
-            Destroy(gameObject); // Asteroid
+            // Asteroid
+            Destroy(gameObject); 
         }
     }
 }

@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    //public float tilt;
-    //public PlayerBoundary boundary;
-
     public Transform _shotSpawn;
     public GameObject _shot;
 
