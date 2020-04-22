@@ -69,6 +69,20 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // TODO: better fix
+        // Avoids enemy to keep moving after round finished
+        if (_rigidBody != null && (GameInfo.Instance.GameState == GameState.Starting ||
+            GameInfo.Instance.GameState == GameState.PlayerLoose ||
+            GameInfo.Instance.GameState == GameState.PlayerWin))
+        {
+            _rigidBody.velocity = Vector3.zero;
+            _rigidBody.rotation = Quaternion.Euler(
+                                    90 + (_rigidBody.velocity.y * _tilt),
+                                    0.0f,
+                                    _rigidBody.velocity.x * _tilt
+                                );
+        }
+
         if (GameInfo.Instance.GameState != GameState.Running) return;
         if (_playerRigidBody == null) return; // avoids errors on console
 

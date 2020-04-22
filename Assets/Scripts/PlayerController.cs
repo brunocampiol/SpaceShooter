@@ -66,12 +66,26 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // TODO: find better fix
+        // Avoids enemy to keep moving after round finished
+        if (GameInfo.Instance.GameState == GameState.Starting ||
+            GameInfo.Instance.GameState == GameState.PlayerLoose ||
+            GameInfo.Instance.GameState == GameState.PlayerWin)
+        {
+            SetPlayerPosition(0, 0);
+        }
+
         if (GameInfo.Instance.GameState != GameState.Running) return;
 
         float moveHorizontal = Input.GetAxis(_horizontal);
         float moveVertical = Input.GetAxis(_vertical);
 
-        Vector3 movement = new Vector3(moveHorizontal, moveVertical, 0.0f);
+        SetPlayerPosition(moveVertical, moveHorizontal);
+    }
+
+    private void SetPlayerPosition(float vertical, float horizontal)
+    {
+        Vector3 movement = new Vector3(horizontal, vertical, 0.0f);
         _rigidBody.velocity = movement * _speed;
 
         _rigidBody.position = new Vector3(
