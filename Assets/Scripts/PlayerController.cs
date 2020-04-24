@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private ILogger _logger;
     private PlayerBoundary _boundry;
     private Rigidbody _rigidBody;
+    private Transform _playerTransform;
     private float _fireRate;
     private float _speed;
     private float _tilt;
@@ -20,9 +21,10 @@ public class PlayerController : MonoBehaviour
     private string _horizontal;
     private string _vertical;
 
-    // Start is called before the first frame update
-    void Start()
+    public PlayerController()
     {
+        _logger = new Logger();
+
         _fireRate = GameInfoStatic.PlayerFireRate;
         _speed = GameInfoStatic.PlayerSpeed;
         _tilt = GameInfoStatic.PlayerTilt;
@@ -31,14 +33,18 @@ public class PlayerController : MonoBehaviour
         _horizontal = GameInfoStatic.Horizontal;
         _vertical = GameInfoStatic.Vertical;
 
-        _logger = new Logger();
-
-        _rigidBody = GetComponent<Rigidbody>();
-        _rigidBody.freezeRotation = true;
-
         _boundry = new PlayerBoundary();
         _boundry.xMax = GameInfoStatic.PlayableAreaBoundryX;
         _boundry.yMax = GameInfoStatic.PlayableAreaBoundryY;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        _rigidBody = GetComponent<Rigidbody>();
+        _rigidBody.freezeRotation = true;
+
+        _playerTransform = GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -94,8 +100,14 @@ public class PlayerController : MonoBehaviour
             0.0f
         );
 
+        //
+        _playerTransform.localScale.Set(0.3F,0.3F,0.3F);
+         
+        //_rigidBody.transform.localScale.Set(0.3F,0.3F,0.3F);
+
+        // SETS PLAYER ROTATION EACH FRAME
         _rigidBody.rotation = Quaternion.Euler(
-           90 + (_rigidBody.velocity.y * -_tilt),
+           270 + (_rigidBody.velocity.y * -_tilt),
            0.0f,
            _rigidBody.velocity.x * -_tilt
         );

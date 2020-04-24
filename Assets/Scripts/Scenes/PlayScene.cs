@@ -14,9 +14,6 @@ public class PlayScene : MonoBehaviour
     public Text PlayerLives;
     public Text CenterText;
 
-    public GameObject PlayerObject;
-    public GameObject EnemyObject;
-
     private ILogger _logger;
     private GameObject _player;
     private GameObject _enemy;
@@ -95,6 +92,7 @@ public class PlayScene : MonoBehaviour
 
         // Sets player in the middle
         _player.transform.position = Vector3.zero;
+        
         // Sets enemy in the middle
         _enemy.transform.position = new Vector3(0, 0, 50);
 
