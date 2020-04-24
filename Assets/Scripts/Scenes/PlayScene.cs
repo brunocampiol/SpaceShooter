@@ -27,18 +27,21 @@ public class PlayScene : MonoBehaviour
     private static string _updateTimeText_Tick = "UpdateTimeText_Tick";
     private static string _updateGameTicke_Tick = "UpdateGameTicket_Tick";
 
-    // Start is called before the first frame update
-    void Start()
+    public PlayScene()
     {
         _logger = new Logger();
-
-        _enemy = GameObject.FindGameObjectWithTag(GameInfoStatic.TagEnemy);
-        _player = GameObject.FindGameObjectWithTag(GameInfoStatic.TagPlayer);
 
         // default on game start
         GameInfo.Instance.GameTicks = 0;
         GameInfo.Instance.PlayerLives = GameInfoStatic.DefaultPlayerLives;
         GameInfo.Instance.PlayerScore = GameInfoStatic.DefaultPlayerScore;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        _enemy = GameObject.FindGameObjectWithTag(GameInfoStatic.TagEnemy);
+        _player = GameObject.FindGameObjectWithTag(GameInfoStatic.TagPlayer);
 
         InitGameTimers();
         InitializeScene();

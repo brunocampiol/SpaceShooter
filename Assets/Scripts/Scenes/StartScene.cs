@@ -13,11 +13,14 @@ public class StartScene : MonoBehaviour
 
     private ILogger _logger;
 
+    public StartScene()
+    {
+        _logger = new Logger();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        _logger = new Logger();
-
         GameTitle.text = GameInfoStatic.GameName;
 
         ButtonStart.GetComponentInChildren<Text>().text = GameInfoStatic.ButtonStart;

@@ -22,11 +22,8 @@ public class EnemyController : MonoBehaviour
     private float _nextFire;
     private float _myTime = 0.0F;
 
-    // Start is called before the first frame update
-    void Start()
+    public EnemyController()
     {
-        _player = GameObject.FindGameObjectWithTag(GameInfoStatic.TagPlayer);
-
         _logger = new Logger();
 
         _fireRate = GameInfoStatic.PlayerFireRate;
@@ -34,16 +31,23 @@ public class EnemyController : MonoBehaviour
         _tilt = GameInfoStatic.PlayerTilt;
         _nextFire = GameInfoStatic.PlayerNextFire;
 
-        _rigidBody = GetComponent<Rigidbody>();
-        _rigidBody.freezeRotation = true;
-
-        _playerRigidBody = _player.GetComponent<Rigidbody>();
-
         _boundry = new PlayerBoundary();
         _boundry.xMax = GameInfoStatic.PlayableAreaBoundryX;
         _boundry.yMax = GameInfoStatic.PlayableAreaBoundryY;
 
         _AI = new EnemyAI();
+
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        _player = GameObject.FindGameObjectWithTag(GameInfoStatic.TagPlayer);
+
+        _rigidBody = GetComponent<Rigidbody>();
+        _rigidBody.freezeRotation = true;
+
+        _playerRigidBody = _player.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame

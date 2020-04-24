@@ -6,20 +6,24 @@ using UnityEngine.UI;
 
 public class OptionsScene : MonoBehaviour
 {
-     public Text OptionsTitle;
-     public Button ButtonBack;
+    public Text OptionsTitle;
+    public Button ButtonBack;
 
-     private ILogger _logger;
+    private ILogger _logger;
 
+
+    public OptionsScene()
+    {
+        _logger = new Logger();
+
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        _logger = new Logger();
-
         OptionsTitle.text = GameInfoStatic.OptionsTitle;
 
-        ButtonBack.GetComponentInChildren<Text>().text = GameInfoStatic.ButtonBack;        
+        ButtonBack.GetComponentInChildren<Text>().text = GameInfoStatic.ButtonBack;
 
         ButtonBack.onClick.AddListener(BackButtonClick);
 
@@ -28,10 +32,10 @@ public class OptionsScene : MonoBehaviour
 
     void BackButtonClick()
     {
-       StartCoroutine(LoadStartScene());
+        StartCoroutine(LoadStartScene());
     }
 
-         private IEnumerator LoadStartScene()
+    private IEnumerator LoadStartScene()
     {
         // The Application loads the Scene in the background as the current Scene runs.
         // This is particularly good for creating loading screens.
