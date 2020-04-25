@@ -61,7 +61,7 @@ public class EnemyController : MonoBehaviour
         {
             _nextFire = _myTime + _fireRate;
 
-            Quaternion shotRotation = new Quaternion(_shotSpawn.rotation.x, 0, 0, _shotSpawn.rotation.w);
+            Quaternion shotRotation = Quaternion.Euler(90,0,0);
             GameObject shot = Instantiate(_shot, _shotSpawn.position, shotRotation) as GameObject;
             ShotController shotController = shot.GetComponent<ShotController>();
             shotController.SetDirection(Vector3.back);
@@ -81,7 +81,7 @@ public class EnemyController : MonoBehaviour
         {
             _rigidBody.velocity = Vector3.zero;
             _rigidBody.rotation = Quaternion.Euler(
-                                    90 + (_rigidBody.velocity.y * _tilt),
+                                    180 + (_rigidBody.velocity.y * _tilt),
                                     0.0f,
                                     _rigidBody.velocity.x * _tilt
                                 );
