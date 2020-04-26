@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class DestroyByContact : MonoBehaviour
 {
+    public GameObject explosionEffect;
+    private bool hasExploded = false;
+    private float explosionRadius;
+    private float explosionForce;
+
     private ILogger _logger;
 
     // Start is called before the first frame update
     void Start()
     {
         _logger = new Logger();
+        explosionRadius = 5;
+        explosionForce = 700;
     }
 
     void OnTriggerEnter(Collider other)
@@ -22,6 +29,7 @@ public class DestroyByContact : MonoBehaviour
             {
                 if (GameInfo.Instance.GameState == GameState.Running)
                 {
+                    Explode();
                     GameInfo.Instance.GameState = GameState.PlayerLoose;
                     other.gameObject.SetActive(false);
                 }
@@ -30,6 +38,7 @@ public class DestroyByContact : MonoBehaviour
             {
                 if (GameInfo.Instance.GameState == GameState.Running)
                 {
+                    Explode();
                     GameInfo.Instance.GameState = GameState.PlayerWin;
                     other.gameObject.SetActive(false);
                 }
@@ -43,5 +52,27 @@ public class DestroyByContact : MonoBehaviour
             // Asteroid
             Destroy(gameObject); 
         }
+    }
+
+    private void Explode()
+    {
+        // Show effect
+        Instantiate(explosionEffect, transform.position, transform.rotation);
+
+        // Get  nearby objects
+        // add force
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        foreach (Collider nearbyObj in colliders)
+        {
+            var body = nearbyObj.GetComponent<Rigidbody>();
+            if (body != null)
+            {
+                body.AddExplosionForce(explosionForce, transform.position, explosionRadius);;
+            }
+        }
+
+        // Remove
+        //Destroy(gameObject);
     }
 }
