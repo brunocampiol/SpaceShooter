@@ -58,8 +58,7 @@ public class PlayerController : MonoBehaviour
         {
             _nextFire = _myTime + _fireRate;
 
-            //Quaternion shotRotation = new Quaternion(_shotSpawn.rotation.x, 0, 0, _shotSpawn.rotation.w);
-            Quaternion shotRotation = Quaternion.Euler(90,0,0);
+            Quaternion shotRotation = Quaternion.Euler(GameInfoStatic.DefaultShotRotation);
             GameObject shot = Instantiate(_shot, _shotSpawn.position, shotRotation) as GameObject;
             ShotController shotController = shot.GetComponent<ShotController>();
             shotController.SetDirection(Vector3.forward);
@@ -100,9 +99,6 @@ public class PlayerController : MonoBehaviour
             Mathf.Clamp(_rigidBody.position.y, _boundry.yMin, _boundry.yMax),
             0.0f
         );
-
-        //
-        //_playerTransform.localScale.Set(0.3F,0.3F,0.3F);
 
         // SETS PLAYER ROTATION EACH FRAME
         _rigidBody.rotation = Quaternion.Euler(

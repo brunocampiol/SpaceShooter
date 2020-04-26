@@ -94,10 +94,9 @@ public class PlayScene : MonoBehaviour
         GameInfo.Instance.LevelTime = GameInfoStatic.DefaultLevelTime;
 
         // Sets player in the middle
-        _player.transform.position = Vector3.zero;
-        
+        _player.transform.position = GameInfoStatic.DefaultPlayerPosition;        
         // Sets enemy in the middle
-        _enemy.transform.position = new Vector3(0, 0, 50);
+        _enemy.transform.position = GameInfoStatic.DefaultEnemyPosition;
 
         _player.SetActive(true);
         _enemy.SetActive(true);

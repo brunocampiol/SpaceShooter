@@ -36,17 +36,15 @@ public class EnemyController : MonoBehaviour
         _boundry.yMax = GameInfoStatic.PlayableAreaBoundryY;
 
         _AI = new EnemyAI();
-
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        _player = GameObject.FindGameObjectWithTag(GameInfoStatic.TagPlayer);
-
         _rigidBody = GetComponent<Rigidbody>();
         _rigidBody.freezeRotation = true;
 
+        _player = GameObject.FindGameObjectWithTag(GameInfoStatic.TagPlayer);
         _playerRigidBody = _player.GetComponent<Rigidbody>();
     }
 
@@ -61,7 +59,7 @@ public class EnemyController : MonoBehaviour
         {
             _nextFire = _myTime + _fireRate;
 
-            Quaternion shotRotation = Quaternion.Euler(90,0,0);
+            Quaternion shotRotation = Quaternion.Euler(GameInfoStatic.DefaultShotRotation);
             GameObject shot = Instantiate(_shot, _shotSpawn.position, shotRotation) as GameObject;
             ShotController shotController = shot.GetComponent<ShotController>();
             shotController.SetDirection(Vector3.back);
@@ -80,23 +78,23 @@ public class EnemyController : MonoBehaviour
             GameInfo.Instance.GameState == GameState.PlayerWin))
         {
             _rigidBody.velocity = Vector3.zero;
-            _rigidBody.rotation = Quaternion.Euler(
-                                    180 + (_rigidBody.velocity.y * _tilt),
-                                    0.0f,
-                                    _rigidBody.velocity.x * _tilt
-                                );
+            _rigidBody.rotation = Quaternion.Euler(GetCurrentRotation());
         }
+
 
         if (GameInfo.Instance.GameState != GameState.Running) return;
         if (_playerRigidBody == null) return; // avoids errors on console
 
         _rigidBody.velocity = _AI.GetMovement(_rigidBody.position, _playerRigidBody.position, _speed);
-
-        _rigidBody.rotation = Quaternion.Euler(
-              90 + (_rigidBody.velocity.y * _tilt),
-              0.0f,
-              _rigidBody.velocity.x * _tilt
-          );
+        _rigidBody.rotation = Quaternion.Euler(GetCurrentRotation());
     }
 
+    private Vector3 GetCurrentRotation()
+    {
+        Vector3 rotation = new Vector3(90 + (_rigidBody.velocity.y * _tilt),
+                                        0.0f,
+                                        _rigidBody.velocity.x * _tilt);
+
+        return rotation;
+    }
 }

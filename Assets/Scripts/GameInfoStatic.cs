@@ -1,39 +1,45 @@
-﻿public static class GameInfoStatic
+﻿using UnityEngine;
+
+public static class GameInfoStatic
 {
-    public static float PlayerFireRate = 0.4F;
-    public static float PlayerNextFire = 0.2F;
-    public static float PlayerSpeed = 15;
-    public static float PlayerTilt = 1.2F;
-    public static float PlayableAreaBoundryX = 13F;
-    public static float PlayableAreaBoundryY = 4.7F;
+    public const float PlayerFireRate = 0.4F;
+    public const float PlayerNextFire = 0.2F;
+    public const float PlayerSpeed = 15;
+    public const float PlayerTilt = 1.2F;
+    public const float PlayableAreaBoundryX = 13F;
+    public const float PlayableAreaBoundryY = 4.7F;
 
-    public static int DefaultLevelTime = 60;
-    public static int DefaultPlayerLives = 3;
-    public static int DefaultPlayerScore = 0;
-    public static int DefaultShotSpeed = 25;
+    public const int DefaultLevelTime = 60;
+    public const int DefaultPlayerLives = 3;
+    public const int DefaultPlayerScore = 0;
+    public const int DefaultShotSpeed = 25;
 
-    public static int KillScore = 10;
+    public static Vector3 DefaultPlayerPosition = new Vector3(0, 0, 0);
+    public static Vector3 DefaultEnemyPosition = new Vector3(0, 0, 50);
+    public static Vector3 DefaultShotRotation = new Vector3(90, 0, 0);
 
-    public static float EnemryMovement = 1F;
-    public static float AIMovementThreshold = 0.3F;
+    public const int KillScore = 10;
 
-    public static string ButtonStart = "Start";
-    public static string ButtonOptions = "Options";
-    public static string ButtonBack = "Back";
+    public const float EnemryMovement = 1F;
+    public const float AIMovementThreshold = 0.3F;
 
-    public static string GameName = "Space Shooter";
-    public static string OptionsTitle = "Options";
+    public const string ButtonStart = "Start";
+    public const string ButtonOptions = "Options";
+    public const string ButtonBack = "Back";
 
-    public static string TagPlayer = "Player";
-    public static string TagEnemy = "Enemy";
+    public const string GameName = "Space Shooter";
+    public const string OptionsTitle = "Options";
 
-    public static string Horizontal = "Horizontal";
-    public static string Vertical = "Vertical";
+    public const string TagPlayer = "Player";
+    public const string TagEnemy = "Enemy";
+
+    public const string Horizontal = "Horizontal";
+    public const string Vertical = "Vertical";
 
 
-    public static string StartCenterText = "Are you ready?";
-    public static string GoCenterText = "GO!";
+    public const string StartCenterText = "Are you ready?";
+    public const string GoCenterText = "GO!";
 
-    public static string WinCenterText = "You win";
-    public static string DiedCenterText = "You died";
+    public const string WinCenterText = "You win";
+    public const string DiedCenterText = "You died";
 }
